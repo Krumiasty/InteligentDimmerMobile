@@ -26,6 +26,7 @@ namespace InteligentDimmerMobile
         private BluetoothAdapter btAdapter;
         private BluetoothDevice pickedDevice = null;
         //private string pickedDevice = null;
+
         ObservableCollection<BluetoothDevice> bluetoothDevices =
             new ObservableCollection<BluetoothDevice>();
 
