@@ -10,9 +10,9 @@
   <uses-permission android:name="android.permission.VIBRATE" />
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  <application android:label="InteligentDimmerMobile" android:name="android.app.Application" android:allowBackup="true" android:debuggable="true">
-    <activity android:label="ControlActivity" android:name="md5f045cad8464ce5fed9378983a3976cb2.ControlActivity" />
-    <activity android:icon="@drawable/icon" android:label="InteligentDimmerMobile" android:name="md5f045cad8464ce5fed9378983a3976cb2.MainActivity">
+  <application android:label="Dimmer" android:icon="@drawable/sun" android:name="android.app.Application" android:allowBackup="true" android:debuggable="true">
+    <activity android:label="Control Panel" android:theme="@android:style/Theme.Holo.Light.NoActionBar" android:name="md5f045cad8464ce5fed9378983a3976cb2.ControlActivity" />
+    <activity android:icon="@drawable/sun" android:label="Dimmer" android:name="md5f045cad8464ce5fed9378983a3976cb2.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
@@ -27,4 +27,5 @@
       </intent-filter>
     </receiver>
   </application>
+  <meta-data android:name="android.support.VERSION" android:value="25.3.1" />
 </manifest>

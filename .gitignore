@@ -290,3 +290,9 @@ __pycache__/
 # .gitconfig
 .gitconfig
 .gitconfig.*
+
+# bin and obj
+bin
+bin/
+obj
+obj/
