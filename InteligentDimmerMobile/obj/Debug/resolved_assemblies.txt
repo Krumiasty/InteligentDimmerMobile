@@ -7,6 +7,15 @@ C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\
 C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\System.dll
 C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\System.Xml.dll
 C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\System.Xml.Linq.dll
+C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\Xamarin.Android.Support.Animated.Vector.Drawable.dll
+C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\Xamarin.Android.Support.Annotations.dll
+C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\Xamarin.Android.Support.Compat.dll
+C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\Xamarin.Android.Support.Core.UI.dll
+C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\Xamarin.Android.Support.Core.Utils.dll
+C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\Xamarin.Android.Support.Fragment.dll
+C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\Xamarin.Android.Support.Media.Compat.dll
+C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\Xamarin.Android.Support.v7.AppCompat.dll
+C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\Xamarin.Android.Support.Vector.Drawable.dll
 C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\System.Threading.dll
 C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\System.Runtime.dll
 C:\Repos\InteligentDimmerMobile\InteligentDimmerMobile\obj\Debug\android\assets\System.ComponentModel.Composition.dll

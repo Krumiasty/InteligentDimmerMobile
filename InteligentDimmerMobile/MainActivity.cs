@@ -2,21 +2,16 @@
 using Android.Widget;
 using Android.OS;
 using System;
-using Android.Hardware.Usb;
 using Android.Content;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.IO.Ports;
 using System.Threading.Tasks;
 using Android.Bluetooth;
-using Android.Bluetooth.LE;
-using Android.Runtime;
-using Java.IO;
+using Android.Content.Res;
+using InteligentDimmerMobile.Model;
 
 namespace InteligentDimmerMobile
 {
-    [Activity(Label = "InteligentDimmerMobile", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "Dimmer", MainLauncher = true, Icon = "@drawable/sun")]
     public class MainActivity : Activity
     {
         private Button _scanButton;
@@ -26,7 +21,7 @@ namespace InteligentDimmerMobile
         private BluetoothAdapter btAdapter;
         private BluetoothDevice pickedDevice = null;
         //private string pickedDevice = null;
-
+        private BluetoothSocket _socket;
 
         ObservableCollection<BluetoothDevice> bluetoothDevices =
             new ObservableCollection<BluetoothDevice>();
@@ -45,23 +40,85 @@ namespace InteligentDimmerMobile
 
             _scanButton.Click += ScanOnClick;
 
+            var controlActivity = new Intent(this, typeof(ControlActivity));
+            controlActivity.PutExtra("DeviceName", "Test");
+            //    controlActivity.PutExtra("DeviceName", pickedDevice.Name);
+            //     controlActivity.PutExtra("DeviceMac", pickedDevice.Address);
+            StartActivity(controlActivity);
+
             FirstScan();
+
+
 
        //     _devicesList.Adapter = new BluetoothsAdapter(bluetoothNames);
             _devicesList.ItemClick += OnItemClick;
 
-            _connectButton.Click += (sender, args) =>
+            _connectButton.Click += /*async*/ (sender, args) =>
             {
                 if (pickedDevice != null)
                 {
-                    var controlActivity = new Intent(this, typeof(ControlActivity));
-                    controlActivity.PutExtra("DeviceName", pickedDevice.Name);
-                    StartActivity(controlActivity);
+                    #region alternative
+                    //_socket = pickedDevice.CreateRfcommSocketToServiceRecord(UUID.FromString(Constants.BluetoothUUID));
+                    //await _socket.ConnectAsync();
+
+                    //// Write data to the device
+                    //// SendData();
+                    //// PrepareData(0x00, 0x00);
+                    ////await _socket.OutputStream.WriteAsync()
+                    //await _socket.InputStream.WriteAsync(new byte[]
+                    //{
+                    //    ControlData.StartByte,
+                    //    ControlData.CommandByte,
+                    //    ControlData.SeparatorByte,
+                    //    ControlData.DataByte,
+                    //    ControlData.EndByte
+                    // }, 0, 5);
+
+                    //byte[] response = new []{ (byte)0 };
+                    //await _socket.OutputStream.ReadAsync(response, 0, 1);
+
+                    //// _socket.OutputStream.Close();
+
+                    ////await _socket.InputStream.ReadAsync(byte[] { }, 0, 0);
+                    /// 
+                    /// 
+                    
+                    #endregion
+
+                    byte[] response = new []{ (byte)0 };
+                    if (response[0] == (byte)0)
+                    {
+                        //_socket.OutputStream.Close();
+                        //_socket.InputStream.Close();
+                        //var controlActivity = new Intent(this, typeof(ControlActivity));
+                        //controlActivity.PutExtra("DeviceName", pickedDevice.Name);
+                        //controlActivity.PutExtra("DeviceMac", pickedDevice.Address);
+                        //StartActivity(controlActivity);
+                    }
                 }
             };
         }
 
-        void FirstScan()
+        public override void OnBackPressed()
+        {
+            base.OnBackPressed();
+            _socket.Close();
+        }
+
+        private void SendData()
+        {
+        //        Response = null;
+            _socket.OutputStream.Write(new byte[]
+             {
+                    ControlData.StartByte,
+                    ControlData.CommandByte,
+                    ControlData.SeparatorByte,
+                    ControlData.DataByte,
+                    ControlData.EndByte
+             }, 0, 5);
+        }
+
+        private void FirstScan()
         {
             btAdapter = BluetoothAdapter.DefaultAdapter;
             if (btAdapter == null)
@@ -80,7 +137,7 @@ namespace InteligentDimmerMobile
             _devicesList.Adapter = new BluetoothsAdapter(bluetoothDevices);
         }
 
-        void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        private void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             pickedDevice = bluetoothDevices[e.Position];
             //pickedDevice = bluetoothNames[e.Position];
