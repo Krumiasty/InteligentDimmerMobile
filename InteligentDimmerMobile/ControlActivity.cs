@@ -14,7 +14,8 @@ using Java.Util;
 
 namespace InteligentDimmerMobile
 {
-    [Activity(Label = "Control Panel", Theme = "@android:style/Theme.Holo.Light.NoActionBar")]
+    // Theme = "@android:style/Theme.Holo.Light.NoActionBar")  Theme.AppCompat.Light.NoActionBar
+    [Activity(Label = "Control Panel", Theme = "@style/MyTheme")]
     public class ControlActivity : Activity
     {
         private LinearLayout _rootLayout;
@@ -53,7 +54,7 @@ namespace InteligentDimmerMobile
             ValueToSend = 0;
             _powerValuEditText.Text = 0.ToString();
 
-            _pickedDeviceTextView.Text = "Device : " + Intent.GetStringExtra("DeviceName");
+            _pickedDeviceTextView.Text = "Device: " + Intent.GetStringExtra("DeviceName");
             _onOffSwitch.CheckedChange += _onOffSwitch_CheckedChange;
             _sliderSeekBar.ProgressChanged += _sliderSeekBar_ProgressChanged;
             _powerValuEditText.TextChanged += _powerValuEditText_TextChanged;

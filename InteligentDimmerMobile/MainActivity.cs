@@ -11,7 +11,7 @@ using InteligentDimmerMobile.Model;
 
 namespace InteligentDimmerMobile
 {
-    [Activity(Label = "Dimmer", MainLauncher = true, Icon = "@drawable/sun")]
+    [Activity(Label = "Dimmer", Icon = "@drawable/sun")]
     public class MainActivity : Activity
     {
         private Button _scanButton;

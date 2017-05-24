@@ -96,28 +96,36 @@
         android:id="@+id/powerValueLinearLayout"
         android:paddingBottom="30dp">
         <TextView
-          android:layout_width="100dp"
+          android:layout_width="wrap_content"
           android:layout_height="50dp"
-          android:text="Power"
+          android:text="Current Value:"
           android:fontFamily="sans-serif-condensed"
           android:layout_gravity="center"
           android:gravity="center"
-          android:textSize="18dp"/>
-        <EditText
-          android:inputType="number"
-          android:layout_width="100dp"
-          android:layout_height="50dp"
-          android:gravity="center"
-          android:layout_gravity="center"
-          android:id="@+id/powerValueEditText"
-          android:imeOptions="actionDone"/>
+          android:textSize="20dp"/>
+        <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:paddingLeft="5dp"
+          android:paddingRight="5dp">
+          <EditText
+            android:inputType="number"
+            android:layout_width="75dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/powerValueEditText"
+            android:imeOptions="actionDone"
+            android:textSize="20dp"/>
+        </LinearLayout>
+       
         <TextView
-          android:layout_width="50dp"
+          android:layout_width="wrap_content"
           android:layout_height="50dp"
           android:text="%"
           android:layout_gravity="center"
           android:gravity="center"
-          android:textSize="18dp"
+          android:textSize="20dp"
           android:fontFamily="sans-serif-condensed"/>
       </LinearLayout>
       <LinearLayout
@@ -138,16 +146,23 @@
           android:fontFamily="sans-serif-medium"
           android:gravity="center"
           android:layout_gravity="center"
-          android:textSize="20dp"/>
-        <TextView
+          android:textSize="24dp"/>
+        <LinearLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:id="@+id/startTimeHeaderLayout"
+          android:paddingTop="15dp"
           android:gravity="center"
-          android:layout_gravity="center"
-          android:textSize="18dp"
-          android:text="Start time:"
-          android:fontFamily="sans-serif-condensed"
-          android:paddingTop="10dp"/>
+          android:layout_gravity="center">
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="22dp"
+            android:text="Start time:"
+            android:fontFamily="sans-serif-condensed"/>
+        </LinearLayout>
         <LinearLayout
           android:orientation="horizontal"
           android:layout_width="match_parent"
@@ -156,38 +171,38 @@
           android:gravity="center">
           <EditText
             android:inputType="number"
-            android:layout_width="100dp"
+            android:layout_width="75dp"
             android:layout_height="50dp"
             android:gravity="center"
             android:layout_gravity="center"
             android:id="@+id/startTimeHoursEditText"
             android:hint="HH"
-            android:textSize="16dp"
+            android:textSize="20dp"
             android:imeOptions="actionNext"/>
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
-            android:textSize="16dp"
+            android:textSize="20dp"
             android:text=":"/>
           <EditText
             android:inputType="time"
-            android:layout_width="100dp"
+            android:layout_width="75dp"
             android:layout_height="50dp"
             android:gravity="center"
             android:layout_gravity="center"
             android:imeOptions="actionDone"
             android:id="@+id/startTimeMinutesEditText"
             android:hint="MM"
-            android:textSize="16dp"/>
+            android:textSize="20dp"/>
         </LinearLayout>
         <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:gravity="center"
           android:layout_gravity="center"
-          android:textSize="18dp"
+          android:textSize="20dp"
           android:text="End time:"
           android:fontFamily="sans-serif-condensed"
           android:paddingTop="10dp"/>
@@ -199,31 +214,31 @@
           android:gravity="center">
           <EditText
             android:inputType="number"
-            android:layout_width="100dp"
+            android:layout_width="75dp"
             android:layout_height="50dp"
             android:gravity="center"
             android:layout_gravity="center"
             android:id="@+id/endTimeHoursEditText"
             android:hint="HH"
-            android:textSize="16dp"
+            android:textSize="20dp"
             android:imeOptions="actionNext"/>
           <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
-            android:textSize="16dp"
+            android:textSize="20dp"
             android:text=":"/>
           <EditText
             android:inputType="time"
-            android:layout_width="100dp"
+            android:layout_width="75dp"
             android:layout_height="50dp"
             android:gravity="center"
             android:layout_gravity="center"
             android:imeOptions="actionDone"
             android:id="@+id/endTimeMinutesEditText"
             android:hint="MM"
-            android:textSize="16dp"/>
+            android:textSize="20dp"/>
         </LinearLayout>
         
         <TextView
@@ -231,7 +246,7 @@
           android:layout_height="wrap_content"
           android:gravity="center"
           android:layout_gravity="center"
-          android:textSize="18dp"
+          android:textSize="20dp"
           android:text="Brightness:"
           android:fontFamily="sans-serif-condensed"
           android:paddingTop="10dp"/>
@@ -242,20 +257,21 @@
         android:gravity="center">
         <EditText
           android:inputType="time"
-          android:layout_width="100dp"
+          android:layout_width="75dp"
           android:layout_height="50dp"
           android:gravity="center"
           android:layout_gravity="center"
           android:imeOptions="actionDone"
           android:id="@+id/brightnessEditText"
           android:hint="100"
-          android:textSize="16dp"/>
+          android:textSize="20dp"/>
         <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:gravity="center"
           android:layout_gravity="center"
-          android:textSize="16dp"
+          android:textSize="20dp"
+          android:fontFamily="sans-serif-condensed"
           android:text="%"/>
       </LinearLayout>
         <LinearLayout
