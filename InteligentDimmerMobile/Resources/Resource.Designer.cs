@@ -2423,6 +2423,12 @@ namespace InteligentDimmerMobile
 			// aapt resource value: 0x7f0700a2
 			public const int Animation_AppCompat_DropDownUp = 2131165346;
 			
+			// aapt resource value: 0x7f070162
+			public const int AppBaseTheme = 2131165538;
+			
+			// aapt resource value: 0x7f070163
+			public const int AppTheme = 2131165539;
+			
 			// aapt resource value: 0x7f0700a3
 			public const int Base_AlertDialog_AppCompat = 2131165347;
 			

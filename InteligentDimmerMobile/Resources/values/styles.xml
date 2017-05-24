@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
-  <style name="MyTheme.Base" parent="@style/Theme.Holo.Light.NoActionBar">
+  <style name="MyTheme.Base" parent="Theme.Holo.Light.NoActionBar">
   </style>
 
   <style name="MyTheme" parent="MyTheme.Base">
