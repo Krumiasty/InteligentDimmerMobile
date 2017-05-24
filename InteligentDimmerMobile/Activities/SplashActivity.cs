@@ -3,7 +3,7 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 
-namespace InteligentDimmerMobile
+namespace InteligentDimmerMobile.Activities
 {
     [Activity(Theme = "@style/MyTheme.Splash", MainLauncher = true, NoHistory = true)]
     public class SplashActivity : AppCompatActivity

@@ -12,10 +12,10 @@ using InteligentDimmerMobile.Configuration;
 using InteligentDimmerMobile.Services;
 using Java.Util;
 
-namespace InteligentDimmerMobile
+namespace InteligentDimmerMobile.Activities
 {
-    // Theme = "@android:style/Theme.Holo.Light.NoActionBar")  Theme.AppCompat.Light.NoActionBar
-    [Activity(Label = "Control Panel", Theme = "@style/MyTheme")]
+    // Theme = "@android:style/Theme.Holo.Light.NoActionBar"  "Theme.AppCompat.Light.NoActionBar" "@style/MyTheme"
+    [Activity(Label = "Control Panel", Theme = "@style/AppTheme")]
     public class ControlActivity : Activity
     {
         private LinearLayout _rootLayout;

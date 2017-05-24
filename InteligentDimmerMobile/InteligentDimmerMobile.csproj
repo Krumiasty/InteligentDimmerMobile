@@ -92,15 +92,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BluetoothsAdapter.cs" />
+    <Compile Include="Adapters\BluetoothsAdapter.cs" />
     <Compile Include="Configuration\Constants.cs" />
-    <Compile Include="ControlActivity.cs" />
-    <Compile Include="MainActivity.cs" />
+    <Compile Include="Activities\ControlActivity.cs" />
+    <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Model\ControlData.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PrepareDataService.cs" />
-    <Compile Include="SplashActivity.cs" />
+    <Compile Include="Activities\SplashActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -151,6 +151,9 @@
     <AndroidResource Include="Resources\values\color.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values-v14\styles.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

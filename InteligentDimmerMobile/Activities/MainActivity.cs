@@ -7,11 +7,12 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Android.Bluetooth;
 using Android.Content.Res;
+using InteligentDimmerMobile.Adapters;
 using InteligentDimmerMobile.Model;
 
-namespace InteligentDimmerMobile
+namespace InteligentDimmerMobile.Activities
 {
-    [Activity(Label = "Dimmer", Icon = "@drawable/sun")]
+    [Activity(Label = "Dimmer", Icon = "@drawable/sun", Theme = "@style/AppTheme")]
     public class MainActivity : Activity
     {
         private Button _scanButton;

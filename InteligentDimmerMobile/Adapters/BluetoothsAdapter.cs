@@ -5,7 +5,7 @@ using Android.Bluetooth;
 using Android.Views;
 using Android.Widget;
 
-namespace InteligentDimmerMobile
+namespace InteligentDimmerMobile.Adapters
 {
     //public class BluetoothsAdapter : BaseAdapter<string>
     //{
