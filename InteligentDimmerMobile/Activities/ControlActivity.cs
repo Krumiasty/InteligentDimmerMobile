@@ -1,15 +1,18 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Android.App;
 using Android.Bluetooth;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
+using Android.Text;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 using InteligentDimmerMobile.Configuration;
 using InteligentDimmerMobile.Services;
+using Java.Lang;
 using Java.Util;
 
 namespace InteligentDimmerMobile.Activities
@@ -19,20 +22,26 @@ namespace InteligentDimmerMobile.Activities
     public class ControlActivity : Activity
     {
         private LinearLayout _rootLayout;
+
+        private LinearLayout _wrapperLayout;
         private TextView _pickedDeviceTextView;
         private Switch _onOffSwitch;
         private SeekBar _sliderSeekBar;
-        private EditText _powerValuEditText;
+        private EditText _brightnessEditText;
         private EditText _startTimeHoursEditText;
         private EditText _startTimeMinutesEditText;
+        private EditText _endTimeHoursEditText;
+        private EditText _endTimeMinutesEditText;
+        private EditText _brightnessTimerEditText;
+        private Button _setTimerButton;
 
         private BluetoothAdapter btAdapter;
         private BluetoothSocket _socket;
 
-        private NumberPicker _numberPicker;
+        private InputMethodManager _inputMethodManager;
 
-        private int SliderValue = 0;
-        private int ValueToSend = 0; // other than Slider becaues it causes problem with switch
+        private int _sliderValue = 0;
+        private int _valueToSend = 0; // other than Slider becaues it causes problem with switch
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -40,28 +49,21 @@ namespace InteligentDimmerMobile.Activities
 
             SetContentView(Resource.Layout.ControlLayout);
 
-            _rootLayout = FindViewById<LinearLayout>(Resource.Id.rootLayout);
-            _pickedDeviceTextView = FindViewById<TextView>(Resource.Id.pickedDeviceNameTextView);
-            _onOffSwitch = FindViewById<Switch>(Resource.Id.onOffSwitch);
-            _sliderSeekBar = FindViewById<SeekBar>(Resource.Id.seekBar);
-            _powerValuEditText = FindViewById<EditText>(Resource.Id.powerValueEditText);
-            _startTimeHoursEditText = FindViewById<EditText>(Resource.Id.startTimeHoursEditText);
-            _startTimeMinutesEditText = FindViewById<EditText>(Resource.Id.startTimeMinutesEditText);
+            SetupBindings();
+            SetupDefaultValues();
+            ValidateWhenLostFocusBindings();
+            SetupBrightnessPanelBindings();
+            ClearFocusWhenEditionFinishedBindings();
 
-            //    _numberPicker = FindViewById<NumberPicker>(Resource.Id.numberPicker1);
-
-            SliderValue = 0;
-            ValueToSend = 0;
-            _powerValuEditText.Text = 0.ToString();
+            _inputMethodManager = (InputMethodManager)GetSystemService(Context.InputMethodService);
 
             _pickedDeviceTextView.Text = "Device: " + Intent.GetStringExtra("DeviceName");
-            _onOffSwitch.CheckedChange += _onOffSwitch_CheckedChange;
-            _sliderSeekBar.ProgressChanged += _sliderSeekBar_ProgressChanged;
-            _powerValuEditText.TextChanged += _powerValuEditText_TextChanged;
        
             var macAddress = Intent.GetStringExtra("DeviceMac");
 
             btAdapter = BluetoothAdapter.DefaultAdapter;
+
+            #region codeWithRealDevice
             //     var pickedDevice = btAdapter.BondedDevices.FirstOrDefault(x => x.Address == macAddress);
 
             //     _socket = pickedDevice.CreateRfcommSocketToServiceRecord(UUID.FromString(Constants.BluetoothUUID));
@@ -71,225 +73,432 @@ namespace InteligentDimmerMobile.Activities
             //{
             //    Toast.MakeText(this, "Success!", ToastLength.Short).Show();
             //}
+#endregion
 
-            imm = (InputMethodManager)GetSystemService(Context.InputMethodService);
-            //imm.HideSoftInputFromWindow(_powerValuEditText.WindowToken, 0);
+            _wrapperLayout.Touch += OnWrapperLayoutTouch;
 
+            _setTimerButton.Click += OnSetTimerButtonClick;
 
-            _powerValuEditText.KeyPress += (object sender, View.KeyEventArgs e) =>
-            {
-                var et = sender as EditText;
-                et.SetCursorVisible(true);
-                et.SetSelectAllOnFocus(true);
-                e.Handled = false;
-                if (e.Event.Action == KeyEventActions.Down && e.KeyCode == Keycode.Enter)
-                {
-                    int tmpVal;
-                    if (Int32.TryParse(_powerValuEditText.Text, out tmpVal))
-                    {
-                        if (tmpVal > 100)
-                        {
-                            _powerValuEditText.Text = 100.ToString();
-                            _sliderSeekBar.Progress = 100;
-                        }
-                        else if (tmpVal < 0)
-                        {
-                            _powerValuEditText.Text = 0.ToString();
-                            _sliderSeekBar.Progress = 0;
-                        }
-                    }
-
-                    Toast.MakeText(this, _powerValuEditText.Text, ToastLength.Short).Show();
-                    e.Handled = true;
-                    et.SetCursorVisible(false);
-                }
-            };
-
-            _powerValuEditText.EditorAction += MyEditText_EditorAction;
-            _powerValuEditText.Click += MyEditText_Click;
-
-            _rootLayout.RequestFocus();
-            _rootLayout.Click += _rootLayout_Click;
         }
-
-        private InputMethodManager imm;
-
-        private void _rootLayout_Click(object sender, EventArgs e)
+       
+        private void ClearFocusWhenEditionFinishedBindings()
         {
-            _rootLayout.RequestFocus();
-            imm.HideSoftInputFromWindow(_powerValuEditText.WindowToken, HideSoftInputFlags.None);
-            imm.HideSoftInputFromInputMethod(_powerValuEditText.WindowToken, HideSoftInputFlags.None);
-            imm.HideSoftInputFromWindow(_startTimeHoursEditText.WindowToken, HideSoftInputFlags.None);
-            imm.HideSoftInputFromInputMethod(_startTimeHoursEditText.WindowToken, HideSoftInputFlags.None);
+            _startTimeHoursEditText.EditorAction += OnStartTimeHoursEditTextEditorAction;
+            _startTimeMinutesEditText.EditorAction += OnStartTimeMinutesEditTextEditorAction;
+            _endTimeHoursEditText.EditorAction += OnEndTimeHoursEditTextEditorAction;
+            _endTimeMinutesEditText.EditorAction += OnEndTimeMinutesEditTextEditorAction;
+            _brightnessTimerEditText.EditorAction += OnBrightnessTimerEditTextEditorAction;
         }
 
-        //public override bool DispatchTouchEvent(MotionEvent ev)
-        //{
-        //    if (ev.Action == MotionEventActions.Down)
-        //    {
-        //        View v = Window.CurrentFocus;
-        //        if (v is EditText)
-        //        {
-        //            Rect outRect = new Rect();
-        //            v.GetGlobalVisibleRect(outRect);
-        //            if (!outRect.Contains((int) ev.GetX(), (int) ev.GetY()))
-        //            {
-        //                v.ClearFocus();
-        //                InputMethodManager imm = (InputMethodManager)GetSystemService(Context.InputMethodService);
-        //                imm.HideSoftInputFromInputMethod(v.WindowToken, 0);
-        //            }
-        //        }
-        //    }
-        //    return base.DispatchTouchEvent(ev);
-        //}
+        private void SetupBrightnessPanelBindings()
+        {
+            _onOffSwitch.CheckedChange += OnOnOffSwitchCheckedChange;
+            _sliderSeekBar.ProgressChanged += OnSliderSeekBarProgressChanged;
+            _brightnessEditText.TextChanged += OnBrightnessEditTextTextChanged;
 
-        private void MyEditText_EditorAction(object sender, TextView.EditorActionEventArgs e)
+            _brightnessEditText.EditorAction += OnBrightnessEditTextEditorAction;
+            _brightnessEditText.Click += OnBrightnessEditTextClick;
+        }
+
+        private bool? ValidateTimerBrightness(EditText editText)
+        {
+            if (!string.IsNullOrEmpty(editText.Text))
+            {
+                int brightnessValue;
+                if (int.TryParse(editText.Text, out brightnessValue))
+                {
+                    if (brightnessValue >= 0 && brightnessValue <= 100)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            return null;
+        }
+
+        private bool? ValidateTimerHours(EditText field)
+        {
+            if (!string.IsNullOrEmpty(field.Text))
+            {
+                var text = field.Text;
+                int number;
+                if (int.TryParse(text, out number))
+                {
+                    if (number >= 0 && number <= 23)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            return null;
+        }
+
+        private bool? ValidateTimerMinutes(EditText field)
+        {
+            if (!string.IsNullOrEmpty(field.Text))
+            {
+                var text = field.Text;
+                int number;
+                if (int.TryParse(text, out number))
+                {
+                    if (number >= 0 && number <= 59)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            return null;
+        }
+
+        private void OnWrapperLayoutTouch(object sender, View.TouchEventArgs e)
+        {
+            if (e.Event.Action == MotionEventActions.Up)
+            {
+                ClearFocusFromAllEditTexts();
+            }
+        }
+
+        private bool Validate()
+        {
+            var result1 = ValidateTimerHours(_startTimeHoursEditText);
+            if (result1 == false)
+            {
+                _startTimeHoursEditText.SetError("Invalid hour value\nMust be between 0 and 23", null);
+                _startTimeHoursEditText.SetTextColor(Color.Red);
+            }
+            else
+            {
+                _startTimeHoursEditText.SetTextColor(Color.Black);
+            }
+
+            var result2 = ValidateTimerMinutes(_startTimeMinutesEditText);
+            if (result2 == false)
+            {
+                _startTimeMinutesEditText.SetError("Invalid minute value\nMust be between 0 and 59", null);
+                _startTimeMinutesEditText.SetTextColor(Color.Red);
+            }
+            else
+            {
+                _startTimeMinutesEditText.SetTextColor(Color.Black);
+            }
+
+            var result3 = ValidateTimerHours(_endTimeHoursEditText);
+            if (result3 == false)
+            {
+                _endTimeHoursEditText.SetError("Invalid hour value\nMust be between 0 and 23", null);
+                _endTimeHoursEditText.SetTextColor(Color.Red);
+            }
+            else
+            {
+                _endTimeHoursEditText.SetTextColor(Color.Black);
+            }
+
+            var result4 = ValidateTimerMinutes(_endTimeMinutesEditText);
+            if (result4 == false)
+            {
+                _endTimeMinutesEditText.SetError("Invalid minute value\nMust be between 0 and 59", null);
+                _endTimeMinutesEditText.SetTextColor(Color.Red);
+            }
+            else
+            {
+                _endTimeMinutesEditText.SetTextColor(Color.Black);
+            }
+
+            var result5 = ValidateTimerBrightness(_brightnessTimerEditText);
+            if (result5 == false)
+            {
+                _brightnessTimerEditText.SetError("Invalid brightness value\nMust be between 0 and 100", null);
+                _brightnessTimerEditText.SetTextColor(Color.Red);
+            }
+            else
+            {
+                _brightnessTimerEditText.SetTextColor(Color.Black);
+            }
+
+            if (result1 == true && result2 == true && result3 == true
+                && result4 == true && result5 == true)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void ClearFocusFromAllEditTexts(EditText currentEditText = null)
+        {
+            _wrapperLayout.ClearFocus();
+            if (currentEditText != null)
+            {
+                _inputMethodManager.HideSoftInputFromWindow(currentEditText.WindowToken,
+                    HideSoftInputFlags.None);
+            }
+            else
+            {
+                _inputMethodManager.HideSoftInputFromWindow(_brightnessEditText.WindowToken, 
+                    HideSoftInputFlags.None);
+                _inputMethodManager.HideSoftInputFromWindow(_startTimeHoursEditText.WindowToken,
+                    HideSoftInputFlags.None);
+                _inputMethodManager.HideSoftInputFromWindow(_startTimeMinutesEditText.WindowToken,
+                    HideSoftInputFlags.None);
+                _inputMethodManager.HideSoftInputFromWindow(_endTimeHoursEditText.WindowToken, 
+                    HideSoftInputFlags.None);
+                _inputMethodManager.HideSoftInputFromWindow(_endTimeMinutesEditText.WindowToken,
+                    HideSoftInputFlags.None);
+                _inputMethodManager.HideSoftInputFromWindow(_brightnessTimerEditText.WindowToken,
+                    HideSoftInputFlags.None);
+            }
+            Validate();
+        }
+
+        private void SetupBindings()
+        {
+            _wrapperLayout = FindViewById<LinearLayout>(Resource.Id.wrapperLayout);
+            _pickedDeviceTextView = FindViewById<TextView>(Resource.Id.pickedDeviceNameTextView);
+            _onOffSwitch = FindViewById<Switch>(Resource.Id.onOffSwitch);
+            _sliderSeekBar = FindViewById<SeekBar>(Resource.Id.seekBar);
+            _brightnessEditText = FindViewById<EditText>(Resource.Id.brightnessEditText);
+            _startTimeHoursEditText = FindViewById<EditText>(Resource.Id.startTimeHoursEditText);
+            _startTimeMinutesEditText = FindViewById<EditText>(Resource.Id.startTimeMinutesEditText);
+            _endTimeHoursEditText = FindViewById<EditText>(Resource.Id.endTimeHoursEditText);
+            _endTimeMinutesEditText = FindViewById<EditText>(Resource.Id.endTimeMinutesEditText);
+            _brightnessTimerEditText = FindViewById<EditText>(Resource.Id.brightnessTimerEditText);
+            _setTimerButton = FindViewById<Button>(Resource.Id.setTimerButton);
+        }
+
+        private void SetupDefaultValues()
+        {
+            _sliderValue = 0;
+            _valueToSend = 0;
+            _brightnessEditText.Text = 0.ToString();
+        }
+
+        private void OnBrightnessEditTextEditorAction(object sender, TextView.EditorActionEventArgs e)
         {
             if (e.ActionId == ImeAction.Done)
             {
-                _powerValuEditText.SetCursorVisible(false);
+                var editText = sender as EditText;
                 
-                var et = sender as EditText;
-                et.SetSelection(et.Text.Length);
-                if (Int32.TryParse(et.Text, out SliderValue))
-                {
-                    if (SliderValue <= 0)
-                    {
-                        SliderValue = 0;
-                        _onOffSwitch.Checked = false;
-                    }
-                    else
-                    {
-                        _onOffSwitch.Checked = true;
-                        if (SliderValue >= 100)
-                        {
-                            SliderValue = 100;
-                        }
-                        else
-                        {
-                            _sliderSeekBar.Progress = SliderValue;
-                        }
+                var validationResult = ValidateTimerBrightness(editText);
 
-                    }
-                    ValueToSend = SliderValue;
+                if (validationResult == true)
+                {
+                    _brightnessEditText.SetTextColor(Color.Black);
+                    _sliderValue = int.Parse(editText.Text);
+                    _valueToSend = _sliderValue;
+                    _onOffSwitch.Checked = _sliderValue != 0;
+                    _sliderSeekBar.Progress = _sliderValue;
                     PrepareDataService.PrepareData(0x01, 0x00);
                     // Send();
                 }
-            }
-            e.Handled = false;
-        }
-
-        private void MyEditText_Click(object sender, EventArgs e)
-        {
-            _powerValuEditText.SetCursorVisible(true);
-        }
-
-        private void _powerValuEditText_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
-        {
-            var et = sender as EditText;
-            et.SetSelection(et.Text.Length);
-            if (Int32.TryParse(e.Text.ToString(), out SliderValue))
-            {
-                if (SliderValue <= 0)
-                {
-                    SliderValue = 0;
-                    _onOffSwitch.Checked = false;
-                }
                 else
                 {
-                    _onOffSwitch.Checked = true;
-                    if (SliderValue >= 100)
-                    {
-                        SliderValue = 100;
-                    }
-                    else
-                    {
-                        _sliderSeekBar.Progress = SliderValue;
-                    }
-
+                    _brightnessEditText.SetError("Invalid brightness value\nMust be between 0 and 100", null);
+                    _brightnessEditText.SetTextColor(Color.Red);
                 }
-                ValueToSend = SliderValue;
-                PrepareDataService.PrepareData(0x01, 0x00);
-                // Send();
             }
+            e.Handled = false;
+            ClearFocusFromAllEditTexts(sender as EditText);
         }
 
-        private void _sliderSeekBar_ProgressChanged(object sender, SeekBar.ProgressChangedEventArgs e)
+        private void OnBrightnessEditTextClick(object sender, EventArgs e)
         {
-            _powerValuEditText.Text = e.Progress.ToString();
-            
+            _brightnessEditText.SetCursorVisible(true);
         }
 
-        private void _onOffSwitch_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        private void OnBrightnessEditTextTextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            if (!e.IsChecked)
+            var editText = sender as EditText;
+            editText.SetSelection(editText.Text.Length);
+
+            var validationResult = ValidateTimerBrightness(editText);
+
+            if (validationResult == true)
             {
-
-                SliderValue = 0;
-                PrepareDataService.PrepareData(0x00, 0x00);
-                _sliderSeekBar.Progress = SliderValue;
+                _brightnessEditText.SetTextColor(Color.Black);
+                _sliderValue = int.Parse(editText.Text);
+                _valueToSend = _sliderValue;
+                _onOffSwitch.Checked = _sliderValue != 0;
+                _sliderSeekBar.Progress = _sliderValue;
+                PrepareDataService.PrepareData(0x01, 0x00);
                 // Send();
             }
             else
             {
-                
-                if(Int32.TryParse(_powerValuEditText.Text, out ValueToSend))
-                {
-                    if(ValueToSend > 0 && ValueToSend < 100)
-                    {
-                        SliderValue = ValueToSend;
-                    }
-                    else
-                    {
-                        SliderValue = 100;
-                    }
-                }
-              
-                _sliderSeekBar.Progress = SliderValue;
-                PrepareDataService.PrepareData(0x01, (byte)SliderValue);
-                // Send();
+                _brightnessEditText.SetError("Invalid brightness value\nMust be between 0 and 100", null);
+                _brightnessEditText.SetTextColor(Color.Red);
             }
         }
 
+        private void OnSliderSeekBarProgressChanged(object sender, SeekBar.ProgressChangedEventArgs e)
+        {
+            _brightnessEditText.Text = e.Progress.ToString();
+        }
+
+        private void OnOnOffSwitchCheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        {
+            if (!e.IsChecked)
+            {
+                _sliderValue = 0;
+                PrepareDataService.PrepareData(0x00, 0x00);
+                _sliderSeekBar.Progress = _sliderValue;
+                // Send();
+            }
+            else
+            {
+                if(int.TryParse(_brightnessEditText.Text, out _valueToSend))
+                {
+                    if(_valueToSend > 0 && _valueToSend < 100)
+                    {
+                        _sliderValue = _valueToSend;
+                    }
+                    else
+                    {
+                        _sliderValue = 100;
+                    }
+                }
+              
+                _sliderSeekBar.Progress = _sliderValue;
+                PrepareDataService.PrepareData(0x01, (byte)_sliderValue);
+                // Send();
+            }
+        }
 
         public override void OnBackPressed()
         {
             base.OnBackPressed();
          //   _socket.Close();
         }
-    }
 
-    public class NumberPickerDialogFragment : DialogFragment
-    {
-        private readonly Context _context;
-        private readonly int _min, _max, _current;
-        private readonly NumberPicker.IOnValueChangeListener _listener;
-
-        public NumberPickerDialogFragment(Context context, int min, int max, int current, NumberPicker.IOnValueChangeListener listener)
+        private void OnSetTimerButtonClick(object sender, EventArgs e)
         {
-            _context = context;
-            _min = min;
-            _max = max;
-            _current = current;
-            _listener = listener;
+            _wrapperLayout.ClearFocus();
+            if (Validate())
+            {
+                //var startTimeHour = int.Parse(_startTimeHoursEditText.Text);
+                //var startTimeMinute = int.Parse(_startTimeMinutesEditText.Text);
+                //var endTimeHour = int.Parse(_endTimeHoursEditText.Text);
+                //var endTimeinute = int.Parse(_endTimeMinutesEditText.Text);
+                //var brightness = int.Parse(_brightnessTimerEditText.Text);
+                //Send();
+
+                Toast.MakeText(this, "Sent", ToastLength.Short).Show();
+            }
         }
 
-        public override Dialog OnCreateDialog(Bundle savedState)
+        private void ValidateWhenLostFocusBindings()
         {
-            var inflater = (LayoutInflater)_context.GetSystemService((Context.LayoutInflaterService));
-            var view = inflater.Inflate(Resource.Layout.NumberPickerDialog, null);
-            var numberPicker = view.FindViewById<NumberPicker>(Resource.Id.numberPicker);
-            numberPicker.MaxValue = _max;
-            numberPicker.MinValue = _min;
-            numberPicker.Value = _current;
-            numberPicker.SetOnValueChangedListener(_listener);
-
-            var dialog = new AlertDialog.Builder(_context);
-            dialog.SetTitle("Power");
-            dialog.SetView(view);
-            dialog.SetNegativeButton("Cancel", (s, a) => { });
-            dialog.SetPositiveButton("Ok", (s, a) => { });
-            return dialog.Create();
+            _brightnessEditText.FocusChange += OnBrightnessEditTextFocusChange;
+            _startTimeHoursEditText.FocusChange += OnStartTimeHoursEditTextFocusChange;
+            _startTimeMinutesEditText.FocusChange += OnStartTimeMinutesEditTextFocusChange;
+            _endTimeHoursEditText.FocusChange += OnEndTimeHoursEditTextFocusChange;
+            _endTimeMinutesEditText.FocusChange += OnEndTimeMinutesEditTextFocusChange;
+            _brightnessTimerEditText.FocusChange += OnBrightnessTimerEditTextFocusChange;
         }
+
+        #region OnFocusLostValidation
+        private void OnBrightnessEditTextFocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus)
+            {
+                var validationResult = ValidateTimerBrightness(sender as EditText);
+                if (validationResult == false)
+                {
+                    _brightnessEditText.SetError("Invalid brightness value\nMust be between 0 and 100", null);
+                    _brightnessEditText.SetTextColor(Color.Red);
+                }
+                else
+                {
+                    _brightnessEditText.SetTextColor(Color.Black);
+                }
+            }
+        }
+
+        private void OnStartTimeHoursEditTextFocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus)
+            {
+                ClearFocusFromAllEditTexts((sender as EditText));
+            }
+        }
+
+        private void OnStartTimeMinutesEditTextFocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus)
+            {
+                ClearFocusFromAllEditTexts((sender as EditText));
+            }
+        }
+
+        private void OnEndTimeHoursEditTextFocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus)
+            {
+                ClearFocusFromAllEditTexts((sender as EditText));
+            }
+        }
+
+        private void OnEndTimeMinutesEditTextFocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus)
+            {
+                ClearFocusFromAllEditTexts((sender as EditText));
+            }
+        }
+
+        private void OnBrightnessTimerEditTextFocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus)
+            {
+                ClearFocusFromAllEditTexts((sender as EditText));
+            }
+        }
+        #endregion
+
+        #region OnTextEditionAction 
+        private void OnStartTimeHoursEditTextEditorAction(object sender, TextView.EditorActionEventArgs e)
+        {
+            if (e.ActionId == ImeAction.Next)
+            {
+                ClearFocusFromAllEditTexts((sender as EditText));
+            }
+        }
+        private void OnStartTimeMinutesEditTextEditorAction(object sender, TextView.EditorActionEventArgs e)
+        {
+            if (e.ActionId == ImeAction.Done)
+            {
+                ClearFocusFromAllEditTexts((sender as EditText));
+
+            }
+        }
+
+        private void OnEndTimeHoursEditTextEditorAction(object sender, TextView.EditorActionEventArgs e)
+        {
+            if (e.ActionId == ImeAction.Next)
+            {
+                ClearFocusFromAllEditTexts((sender as EditText));
+            }
+        }
+
+        private void OnEndTimeMinutesEditTextEditorAction(object sender, TextView.EditorActionEventArgs e)
+        {
+            if (e.ActionId == ImeAction.Done)
+            {
+                ClearFocusFromAllEditTexts((sender as EditText));
+            }
+        }
+
+        private void OnBrightnessTimerEditTextEditorAction(object sender, TextView.EditorActionEventArgs e)
+        {
+            if (e.ActionId == ImeAction.Done)
+            {
+                ClearFocusFromAllEditTexts((sender as EditText));
+            }
+        }
+        #endregion
     }
 }

@@ -4,6 +4,6 @@
     <SelectedDevice>Sony E2303</SelectedDevice>
     <DefaultDevice>nexusapi50</DefaultDevice>
     <AndroidDesignerPreferredDevice>Nexus 6</AndroidDesignerPreferredDevice>
-    <AndroidDesignerPreferredTheme>Theme.DeviceDefault</AndroidDesignerPreferredTheme>
+    <AndroidDesignerPreferredTheme>Theme.Holo.Light.Dialog.NoActionBar</AndroidDesignerPreferredTheme>
   </PropertyGroup>
 </Project>
