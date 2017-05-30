@@ -799,44 +799,44 @@ namespace InteligentDimmerMobile
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f09003e
-			public const int abc_background_cache_hint_selector_material_dark = 2131296318;
-			
-			// aapt resource value: 0x7f09003f
-			public const int abc_background_cache_hint_selector_material_light = 2131296319;
-			
-			// aapt resource value: 0x7f090040
-			public const int abc_btn_colored_borderless_text_material = 2131296320;
-			
 			// aapt resource value: 0x7f090041
-			public const int abc_btn_colored_text_material = 2131296321;
+			public const int abc_background_cache_hint_selector_material_dark = 2131296321;
 			
 			// aapt resource value: 0x7f090042
-			public const int abc_color_highlight_material = 2131296322;
+			public const int abc_background_cache_hint_selector_material_light = 2131296322;
 			
 			// aapt resource value: 0x7f090043
-			public const int abc_hint_foreground_material_dark = 2131296323;
+			public const int abc_btn_colored_borderless_text_material = 2131296323;
 			
 			// aapt resource value: 0x7f090044
-			public const int abc_hint_foreground_material_light = 2131296324;
+			public const int abc_btn_colored_text_material = 2131296324;
+			
+			// aapt resource value: 0x7f090045
+			public const int abc_color_highlight_material = 2131296325;
+			
+			// aapt resource value: 0x7f090046
+			public const int abc_hint_foreground_material_dark = 2131296326;
+			
+			// aapt resource value: 0x7f090047
+			public const int abc_hint_foreground_material_light = 2131296327;
 			
 			// aapt resource value: 0x7f090001
 			public const int abc_input_method_navigation_guard = 2131296257;
 			
-			// aapt resource value: 0x7f090045
-			public const int abc_primary_text_disable_only_material_dark = 2131296325;
-			
-			// aapt resource value: 0x7f090046
-			public const int abc_primary_text_disable_only_material_light = 2131296326;
-			
-			// aapt resource value: 0x7f090047
-			public const int abc_primary_text_material_dark = 2131296327;
-			
 			// aapt resource value: 0x7f090048
-			public const int abc_primary_text_material_light = 2131296328;
+			public const int abc_primary_text_disable_only_material_dark = 2131296328;
 			
 			// aapt resource value: 0x7f090049
-			public const int abc_search_url_text = 2131296329;
+			public const int abc_primary_text_disable_only_material_light = 2131296329;
+			
+			// aapt resource value: 0x7f09004a
+			public const int abc_primary_text_material_dark = 2131296330;
+			
+			// aapt resource value: 0x7f09004b
+			public const int abc_primary_text_material_light = 2131296331;
+			
+			// aapt resource value: 0x7f09004c
+			public const int abc_search_url_text = 2131296332;
 			
 			// aapt resource value: 0x7f090002
 			public const int abc_search_url_text_normal = 2131296258;
@@ -847,32 +847,32 @@ namespace InteligentDimmerMobile
 			// aapt resource value: 0x7f090004
 			public const int abc_search_url_text_selected = 2131296260;
 			
-			// aapt resource value: 0x7f09004a
-			public const int abc_secondary_text_material_dark = 2131296330;
-			
-			// aapt resource value: 0x7f09004b
-			public const int abc_secondary_text_material_light = 2131296331;
-			
-			// aapt resource value: 0x7f09004c
-			public const int abc_tint_btn_checkable = 2131296332;
-			
 			// aapt resource value: 0x7f09004d
-			public const int abc_tint_default = 2131296333;
+			public const int abc_secondary_text_material_dark = 2131296333;
 			
 			// aapt resource value: 0x7f09004e
-			public const int abc_tint_edittext = 2131296334;
+			public const int abc_secondary_text_material_light = 2131296334;
 			
 			// aapt resource value: 0x7f09004f
-			public const int abc_tint_seek_thumb = 2131296335;
+			public const int abc_tint_btn_checkable = 2131296335;
 			
 			// aapt resource value: 0x7f090050
-			public const int abc_tint_spinner = 2131296336;
+			public const int abc_tint_default = 2131296336;
 			
 			// aapt resource value: 0x7f090051
-			public const int abc_tint_switch_thumb = 2131296337;
+			public const int abc_tint_edittext = 2131296337;
 			
 			// aapt resource value: 0x7f090052
-			public const int abc_tint_switch_track = 2131296338;
+			public const int abc_tint_seek_thumb = 2131296338;
+			
+			// aapt resource value: 0x7f090053
+			public const int abc_tint_spinner = 2131296339;
+			
+			// aapt resource value: 0x7f090054
+			public const int abc_tint_switch_thumb = 2131296340;
+			
+			// aapt resource value: 0x7f090055
+			public const int abc_tint_switch_track = 2131296341;
 			
 			// aapt resource value: 0x7f090005
 			public const int accent_material_dark = 2131296261;
@@ -894,6 +894,9 @@ namespace InteligentDimmerMobile
 			
 			// aapt resource value: 0x7f09003b
 			public const int black = 2131296315;
+			
+			// aapt resource value: 0x7f090040
+			public const int blue = 2131296320;
 			
 			// aapt resource value: 0x7f09000b
 			public const int bright_foreground_disabled_material_dark = 2131296267;
@@ -936,6 +939,9 @@ namespace InteligentDimmerMobile
 			
 			// aapt resource value: 0x7f090018
 			public const int foreground_material_light = 2131296280;
+			
+			// aapt resource value: 0x7f09003f
+			public const int green = 2131296319;
 			
 			// aapt resource value: 0x7f090019
 			public const int highlighted_text_material_dark = 2131296281;
@@ -1012,6 +1018,9 @@ namespace InteligentDimmerMobile
 			// aapt resource value: 0x7f090030
 			public const int primary_text_disabled_material_light = 2131296304;
 			
+			// aapt resource value: 0x7f09003e
+			public const int red = 2131296318;
+			
 			// aapt resource value: 0x7f090031
 			public const int ripple_material_dark = 2131296305;
 			
@@ -1036,11 +1045,11 @@ namespace InteligentDimmerMobile
 			// aapt resource value: 0x7f090038
 			public const int switch_thumb_disabled_material_light = 2131296312;
 			
-			// aapt resource value: 0x7f090053
-			public const int switch_thumb_material_dark = 2131296339;
+			// aapt resource value: 0x7f090056
+			public const int switch_thumb_material_dark = 2131296342;
 			
-			// aapt resource value: 0x7f090054
-			public const int switch_thumb_material_light = 2131296340;
+			// aapt resource value: 0x7f090057
+			public const int switch_thumb_material_light = 2131296343;
 			
 			// aapt resource value: 0x7f090039
 			public const int switch_thumb_normal_material_dark = 2131296313;
@@ -1630,46 +1639,67 @@ namespace InteligentDimmerMobile
 			public const int abc_vector_test = 2130837586;
 			
 			// aapt resource value: 0x7f020053
-			public const int Icon = 2130837587;
+			public const int background_gradient = 2130837587;
 			
 			// aapt resource value: 0x7f020054
-			public const int notification_action_background = 2130837588;
+			public const int Bluetooth = 2130837588;
 			
 			// aapt resource value: 0x7f020055
-			public const int notification_bg = 2130837589;
+			public const int Icon = 2130837589;
 			
 			// aapt resource value: 0x7f020056
-			public const int notification_bg_low = 2130837590;
+			public const int intelligent_dimmer_text = 2130837590;
 			
 			// aapt resource value: 0x7f020057
-			public const int notification_bg_low_normal = 2130837591;
+			public const int Light_Off = 2130837591;
 			
 			// aapt resource value: 0x7f020058
-			public const int notification_bg_low_pressed = 2130837592;
+			public const int Light_On = 2130837592;
 			
 			// aapt resource value: 0x7f020059
-			public const int notification_bg_normal = 2130837593;
+			public const int notification_action_background = 2130837593;
 			
 			// aapt resource value: 0x7f02005a
-			public const int notification_bg_normal_pressed = 2130837594;
+			public const int notification_bg = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public const int notification_icon_background = 2130837595;
-			
-			// aapt resource value: 0x7f02005f
-			public const int notification_template_icon_bg = 2130837599;
-			
-			// aapt resource value: 0x7f020060
-			public const int notification_template_icon_low_bg = 2130837600;
+			public const int notification_bg_low = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
-			public const int notification_tile_bg = 2130837596;
+			public const int notification_bg_low_normal = 2130837596;
 			
 			// aapt resource value: 0x7f02005d
-			public const int notify_panel_notification_icon_bg = 2130837597;
+			public const int notification_bg_low_pressed = 2130837597;
 			
 			// aapt resource value: 0x7f02005e
-			public const int sun = 2130837598;
+			public const int notification_bg_normal = 2130837598;
+			
+			// aapt resource value: 0x7f02005f
+			public const int notification_bg_normal_pressed = 2130837599;
+			
+			// aapt resource value: 0x7f020060
+			public const int notification_icon_background = 2130837600;
+			
+			// aapt resource value: 0x7f020066
+			public const int notification_template_icon_bg = 2130837606;
+			
+			// aapt resource value: 0x7f020067
+			public const int notification_template_icon_low_bg = 2130837607;
+			
+			// aapt resource value: 0x7f020061
+			public const int notification_tile_bg = 2130837601;
+			
+			// aapt resource value: 0x7f020062
+			public const int notify_panel_notification_icon_bg = 2130837602;
+			
+			// aapt resource value: 0x7f020063
+			public const int splash = 2130837603;
+			
+			// aapt resource value: 0x7f020064
+			public const int sun = 2130837604;
+			
+			// aapt resource value: 0x7f020065
+			public const int Timer = 2130837605;
 			
 			static Drawable()
 			{
@@ -1900,9 +1930,6 @@ namespace InteligentDimmerMobile
 			// aapt resource value: 0x7f0a0078
 			public const int notification_main_column_container = 2131361912;
 			
-			// aapt resource value: 0x7f0a0087
-			public const int numberPicker = 2131361927;
-			
 			// aapt resource value: 0x7f0a005c
 			public const int offTextView = 2131361884;
 			
@@ -2058,6 +2085,9 @@ namespace InteligentDimmerMobile
 			
 			// aapt resource value: 0x7f0a0034
 			public const int textSpacerNoTitle = 2131361844;
+			
+			// aapt resource value: 0x7f0a0087
+			public const int textView1 = 2131361927;
 			
 			// aapt resource value: 0x7f0a007b
 			public const int time = 2131361915;
@@ -2269,16 +2299,16 @@ namespace InteligentDimmerMobile
 			public const int notification_template_part_time = 2130903084;
 			
 			// aapt resource value: 0x7f03002d
-			public const int NumberPickerDialog = 2130903085;
+			public const int select_dialog_item_material = 2130903085;
 			
 			// aapt resource value: 0x7f03002e
-			public const int select_dialog_item_material = 2130903086;
+			public const int select_dialog_multichoice_material = 2130903086;
 			
 			// aapt resource value: 0x7f03002f
-			public const int select_dialog_multichoice_material = 2130903087;
+			public const int select_dialog_singlechoice_material = 2130903087;
 			
 			// aapt resource value: 0x7f030030
-			public const int select_dialog_singlechoice_material = 2130903088;
+			public const int SplashScreen = 2130903088;
 			
 			// aapt resource value: 0x7f030031
 			public const int support_simple_spinner_dropdown_item = 2130903089;

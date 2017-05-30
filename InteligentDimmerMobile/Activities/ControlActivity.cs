@@ -1,9 +1,12 @@
+#define TEST
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Android.App;
 using Android.Bluetooth;
 using Android.Content;
+using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Text;
@@ -11,14 +14,16 @@ using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 using InteligentDimmerMobile.Configuration;
+using InteligentDimmerMobile.Model;
 using InteligentDimmerMobile.Services;
 using Java.Lang;
 using Java.Util;
 
+
 namespace InteligentDimmerMobile.Activities
 {
     // Theme = "@android:style/Theme.Holo.Light.NoActionBar"  "Theme.AppCompat.Light.NoActionBar" "@style/MyTheme"
-    [Activity(Label = "Control Panel", Theme = "@style/AppTheme")]
+    [Activity(Label = "Control Panel", Theme = "@style/AppTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class ControlActivity : Activity
     {
         private LinearLayout _rootLayout;
@@ -64,17 +69,23 @@ namespace InteligentDimmerMobile.Activities
             btAdapter = BluetoothAdapter.DefaultAdapter;
 
             #region codeWithRealDevice
-            //     var pickedDevice = btAdapter.BondedDevices.FirstOrDefault(x => x.Address == macAddress);
+            //var pickedDevice = btAdapter.BondedDevices.FirstOrDefault(x => x.Address == macAddress);
 
-            //     _socket = pickedDevice.CreateRfcommSocketToServiceRecord(UUID.FromString(Constants.BluetoothUUID));
-            //     _socket.Connect();
+            //_socket = pickedDevice.CreateInsecureRfcommSocketToServiceRecord(
+            //    UUID.FromString(Constants.BluetoothUUID));
+            //try
+            //{
+            //    _socket.Connect();
+            //}
+            //catch (Java.Lang.Exception e)
+            //{
 
+            //}
             //if (_socket.IsConnected)
             //{
             //    Toast.MakeText(this, "Success!", ToastLength.Short).Show();
             //}
-#endregion
-
+            #endregion
             _wrapperLayout.Touch += OnWrapperLayoutTouch;
 
             _setTimerButton.Click += OnSetTimerButtonClick;
@@ -95,9 +106,7 @@ namespace InteligentDimmerMobile.Activities
             _onOffSwitch.CheckedChange += OnOnOffSwitchCheckedChange;
             _sliderSeekBar.ProgressChanged += OnSliderSeekBarProgressChanged;
             _brightnessEditText.TextChanged += OnBrightnessEditTextTextChanged;
-
             _brightnessEditText.EditorAction += OnBrightnessEditTextEditorAction;
-            _brightnessEditText.Click += OnBrightnessEditTextClick;
         }
 
         private bool? ValidateTimerBrightness(EditText editText)
@@ -164,7 +173,7 @@ namespace InteligentDimmerMobile.Activities
             }
         }
 
-        private bool Validate()
+        private bool ValidateTimer()
         {
             var result1 = ValidateTimerHours(_startTimeHoursEditText);
             if (result1 == false)
@@ -252,7 +261,7 @@ namespace InteligentDimmerMobile.Activities
                 _inputMethodManager.HideSoftInputFromWindow(_brightnessTimerEditText.WindowToken,
                     HideSoftInputFlags.None);
             }
-            Validate();
+            ValidateTimer();
         }
 
         private void SetupBindings()
@@ -277,7 +286,7 @@ namespace InteligentDimmerMobile.Activities
             _brightnessEditText.Text = 0.ToString();
         }
 
-        private void OnBrightnessEditTextEditorAction(object sender, TextView.EditorActionEventArgs e)
+        private async void OnBrightnessEditTextEditorAction(object sender, TextView.EditorActionEventArgs e)
         {
             if (e.ActionId == ImeAction.Done)
             {
@@ -292,7 +301,19 @@ namespace InteligentDimmerMobile.Activities
                     _valueToSend = _sliderValue;
                     _onOffSwitch.Checked = _sliderValue != 0;
                     _sliderSeekBar.Progress = _sliderValue;
-                    PrepareDataService.PrepareData(0x01, 0x00);
+
+                    PrepareDataService.PrepareData(0x01, (byte)_sliderValue, 0x00);
+                    await _socket.OutputStream.WriteAsync(new byte[]
+                    {
+                        ControlData.StartByte,
+                        ControlData.CommandByte,
+                        ControlData.SeparatorByte1,
+                        ControlData.DataByte1,
+                        ControlData.SeparatorByte2,
+                        ControlData.DataByte2,
+                        ControlData.EndByte
+                    }, 0, 7);
+                    //PrepareDataService.PrepareData(0x01, 0x00);
                     // Send();
                 }
                 else
@@ -305,12 +326,7 @@ namespace InteligentDimmerMobile.Activities
             ClearFocusFromAllEditTexts(sender as EditText);
         }
 
-        private void OnBrightnessEditTextClick(object sender, EventArgs e)
-        {
-            _brightnessEditText.SetCursorVisible(true);
-        }
-
-        private void OnBrightnessEditTextTextChanged(object sender, Android.Text.TextChangedEventArgs e)
+        private async void OnBrightnessEditTextTextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
             var editText = sender as EditText;
             editText.SetSelection(editText.Text.Length);
@@ -324,7 +340,18 @@ namespace InteligentDimmerMobile.Activities
                 _valueToSend = _sliderValue;
                 _onOffSwitch.Checked = _sliderValue != 0;
                 _sliderSeekBar.Progress = _sliderValue;
-                PrepareDataService.PrepareData(0x01, 0x00);
+                PrepareDataService.PrepareData(0x01, (byte)_sliderValue, 0x00);
+                await _socket.OutputStream.WriteAsync(new byte[]
+                {
+                    ControlData.StartByte,
+                    ControlData.CommandByte,
+                    ControlData.SeparatorByte1,
+                    ControlData.DataByte1,
+                    ControlData.SeparatorByte2,
+                    ControlData.DataByte2,
+                    ControlData.EndByte
+                }, 0, 7);
+                // PrepareDataService.PrepareData(0x01, 0x00);
                 // Send();
             }
             else
@@ -339,14 +366,24 @@ namespace InteligentDimmerMobile.Activities
             _brightnessEditText.Text = e.Progress.ToString();
         }
 
-        private void OnOnOffSwitchCheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        private async void OnOnOffSwitchCheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
             if (!e.IsChecked)
             {
                 _sliderValue = 0;
-                PrepareDataService.PrepareData(0x00, 0x00);
                 _sliderSeekBar.Progress = _sliderValue;
-                // Send();
+
+                PrepareDataService.PrepareData(0x01, 0x00, 0x00);
+                await _socket.OutputStream.WriteAsync(new byte[]
+                {
+                    ControlData.StartByte,
+                    ControlData.CommandByte,
+                    ControlData.SeparatorByte1,
+                    ControlData.DataByte1,
+                    ControlData.SeparatorByte2,
+                    ControlData.DataByte2,
+                    ControlData.EndByte
+                }, 0, 7);
             }
             else
             {
@@ -363,7 +400,18 @@ namespace InteligentDimmerMobile.Activities
                 }
               
                 _sliderSeekBar.Progress = _sliderValue;
-                PrepareDataService.PrepareData(0x01, (byte)_sliderValue);
+                PrepareDataService.PrepareData(0x01, (byte)_sliderValue, 0x00);
+                await _socket.OutputStream.WriteAsync(new byte[]
+                {
+                    ControlData.StartByte,
+                    ControlData.CommandByte,
+                    ControlData.SeparatorByte1,
+                    ControlData.DataByte1,
+                    ControlData.SeparatorByte2,
+                    ControlData.DataByte2,
+                    ControlData.EndByte
+                }, 0, 7);
+                // PrepareDataService.PrepareData(0x01, (byte)_sliderValue);
                 // Send();
             }
         }
@@ -371,13 +419,13 @@ namespace InteligentDimmerMobile.Activities
         public override void OnBackPressed()
         {
             base.OnBackPressed();
-         //   _socket.Close();
+       //     _socket.Close();
         }
 
         private void OnSetTimerButtonClick(object sender, EventArgs e)
         {
             _wrapperLayout.ClearFocus();
-            if (Validate())
+            if (ValidateTimer())
             {
                 //var startTimeHour = int.Parse(_startTimeHoursEditText.Text);
                 //var startTimeMinute = int.Parse(_startTimeMinutesEditText.Text);
