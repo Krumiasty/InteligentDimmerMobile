@@ -4,18 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="75dp"
     android:gravity="center">
+  <ImageView
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:src="@drawable/bluetooth"
+    android:layout_gravity="center"
+    android:padding="5dp"/>
     <TextView
         android:id="@+id/bluetoothNumberTextView"
-        android:layout_width="100dp"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:padding="5dp" 
+        android:padding="5dp"
         android:textColor="@android:color/black"
-        android:gravity="center"/>
+        android:textSize="20dp"
+        android:gravity="center" />
     <TextView
         android:id="@+id/bluetoothNameTextView"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:padding="5dp"
         android:textColor="@android:color/black"
-        android:gravity="center"/>
+        android:textSize="20dp"
+        android:gravity="center_vertical" />
 </LinearLayout>

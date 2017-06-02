@@ -24,7 +24,7 @@ namespace InteligentDimmerMobile.Activities
 
         private void StartNewActivity()
         {
-            StartActivity(new Intent(Application.Context, typeof(MainActivity)));
+            StartActivity(new Intent(Application.Context, typeof(ConnectionActivity)));
         }
 
         protected override void OnPause()

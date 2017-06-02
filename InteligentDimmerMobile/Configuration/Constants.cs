@@ -14,6 +14,7 @@ namespace InteligentDimmerMobile.Configuration
 {
     public static class Constants
     {
+        public static int BytesNumber = 7;
         public static string BluetoothUUID = "00001101-0000-1000-8000-00805f9b34fb";
     }
 }

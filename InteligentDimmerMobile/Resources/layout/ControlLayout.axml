@@ -37,7 +37,6 @@
               android:paddingBottom="30dp"
               android:paddingTop="10dp"/>
           </LinearLayout>
-           
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -125,7 +124,6 @@
                   android:layout_gravity="center"
                   android:src="@drawable/light_on"/>             
               </RelativeLayout>
-                  
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -178,7 +176,6 @@
                 android:paddingTop="30dp"
                 android:id="@+id/setTimerLinearLayout">
               
-                
               <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
@@ -199,7 +196,6 @@
                   android:layout_gravity="center"
                   android:textSize="24dp" />
               </LinearLayout>
-
               
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -348,16 +344,13 @@
                     android:paddingBottom="20dp"
                     android:gravity="center"
                     android:layout_gravity="center">
-                    <Button
-                        android:layout_height="44dp"
-                        android:layout_width="120dp"
-                        android:text="Set"
-                        android:textSize="22dp"
-                        android:fontFamily="sans-serif-condensed"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:textAlignment="center"
-                        android:id="@+id/setTimerButton"/>
+                  <Button
+                    android:layout_height="50dp"
+                    android:layout_width="120dp"
+                    android:text="Set"
+                    android:textSize="22dp"
+                    android:background="@color/holoblue"
+                    android:id="@+id/setTimerButton"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
