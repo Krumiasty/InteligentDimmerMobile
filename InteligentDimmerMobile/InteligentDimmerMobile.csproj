@@ -16,7 +16,7 @@
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <NuGetPackageImportStamp>
@@ -95,7 +95,7 @@
     <Compile Include="Adapters\BluetoothsAdapter.cs" />
     <Compile Include="Configuration\Constants.cs" />
     <Compile Include="Activities\ControlActivity.cs" />
-    <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Activities\ConnectionActivity.cs" />
     <Compile Include="Model\ControlData.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,7 +117,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\Main.axml">
+    <AndroidResource Include="Resources\layout\ConnectionLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

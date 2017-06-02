@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_gradient"
+        android:gravity="center_horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="Connection Panel"
+            android:textSize="24dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp" />
+      <View
+        android:layout_height="10dp"
+        android:layout_width="match_parent"/>
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:id="@+id/searchButton"
+            android:text="Scan"
+            android:textSize="16dp"
+            android:background="@color/holoblue"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
+            android:orientation="vertical">
+            <View
+                android:layout_height="2dp"
+                android:layout_width="match_parent"
+                android:background="@color/black" />
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:id="@+id/devicesList"
+                android:listSelector="@color/holobluedark"
+                android:choiceMode="singleChoice" />
+            <View
+                android:layout_height="2dp"
+                android:layout_width="match_parent"
+                android:background="@color/black" />
+        </LinearLayout>
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="Connect"
+            android:textSize="16dp"
+            android:background="@color/holoblue"
+            android:id="@+id/connectButton" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/busyIndicatorLinearLayout"
+        android:background="@color/white"
+        android:alpha="0.7">
+        <ProgressBar
+            android:layout_height="150dp"
+            android:layout_width="150dp"
+            android:indeterminate="true"
+            android:id="@+id/busyIndicator"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            android:alpha="1.0"/>
+    </LinearLayout>
+</FrameLayout>
