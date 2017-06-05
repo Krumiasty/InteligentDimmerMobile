@@ -2,4 +2,6 @@
 <resources>
   <dimen name="buttonHeight">50dp</dimen>
   <dimen name="GeneralPadding">10dp</dimen>
+  <dimen name="connectionButtonTextSize">16dp</dimen>
+  <dimen name="connectionUnderlineHeight">2dp</dimen>
 </resources>

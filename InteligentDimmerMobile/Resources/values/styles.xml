@@ -12,4 +12,15 @@
     <item name="android:windowBackground">@drawable/splash</item>
     <item name="android:colorBackground">@color/white</item>
   </style>
+
+  <style name="ConnectionUnderline">
+    <item name="android:layout_height">@dimen/connectionUnderlineHeight</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:background">@color/black</item>
+  </style>
+  
+  <style name="ConnectionHoloButtonStyle">
+    <item name="android:background">@color/holoblue</item>
+    <item name="android:textSize">@dimen/connectionButtonTextSize</item>
+  </style>
 </resources>
