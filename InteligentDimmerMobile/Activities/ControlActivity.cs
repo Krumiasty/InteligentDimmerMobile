@@ -9,6 +9,7 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Text;
+using Android.Transitions;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
@@ -37,6 +38,9 @@ namespace InteligentDimmerMobile.Activities
         private EditText _brightnessTimerEditText;
         private Button _setTimerButton;
 
+        private LinearLayout _busyIndicatorLinearLayoutControl;
+        private ProgressBar _busyIndicatorControl;
+
         private BluetoothAdapter _bluetoothAdapter;
         private BluetoothSocket _socket;
 
@@ -58,6 +62,10 @@ namespace InteligentDimmerMobile.Activities
             SetupBrightnessPanelBindings();
             ClearFocusWhenEditionFinishedBindings();
 
+            _busyIndicatorLinearLayoutControl = FindViewById<LinearLayout>(Resource.Id.busyIndicatorLinearLayoutControl);
+            _busyIndicatorControl = FindViewById<ProgressBar>(Resource.Id.busyIndicatorControl);
+            //     this.Window.TransitionBackgroundFadeDuration = 500;
+
             _inputMethodManager = (InputMethodManager)GetSystemService(Context.InputMethodService);
 
             _pickedDeviceTextView.Text = "Device: " + Intent.GetStringExtra("DeviceName");
@@ -68,22 +76,52 @@ namespace InteligentDimmerMobile.Activities
 
             #region codeWithRealDevice
             var pickedDevice = _bluetoothAdapter.BondedDevices.FirstOrDefault(x => x.Address == macAddress);
+
+            _busyIndicatorLinearLayoutControl.Visibility = ViewStates.Visible;
+            _busyIndicatorControl.Visibility = ViewStates.Visible;
+
             Task.Run(async () =>
             {
                 try
                 {
-                    _socket = pickedDevice.CreateInsecureRfcommSocketToServiceRecord(
+                    //_socket = pickedDevice.CreateInsecureRfcommSocketToServiceRecord(
+                    //    UUID.FromString(Constants.BluetoothUUID));
+                    // await Task.Delay(1000);
+                  
+                    _socket = pickedDevice.CreateRfcommSocketToServiceRecord(
                         UUID.FromString(Constants.BluetoothUUID));
-                    //   pickedDevice.CreateRfcommSocketToServiceRecord(UUID.FromString(Constants.BluetoothUUID));
                     await _socket.ConnectAsync();
+
+                    //PrepareDataService.PrepareData(0x01, (byte)100, 0x00);
+                    //await SendData();
+
+                    _busyIndicatorLinearLayoutControl.Visibility = ViewStates.Gone;
+                    _busyIndicatorControl.Visibility = ViewStates.Gone;
+
                 }
                 catch (Java.Lang.Exception e)
                 {
                     Toast.MakeText(this, "Error!\nConnecting with device failed", ToastLength.Short).Show();
+                    _busyIndicatorLinearLayoutControl.Visibility = ViewStates.Gone;
+                    _busyIndicatorControl.Visibility = ViewStates.Gone;
+                    return;
                 }
                 if (_socket.IsConnected)
                 {
                     Toast.MakeText(this, "Success!", ToastLength.Short).Show();
+
+                  
+                        //await _socket.OutputStream.WriteAsync(new byte[]
+                        //{
+                        //    ControlData.StartByte,
+                        //    ControlData.CommandByte,
+                        //    ControlData.SeparatorByte1,
+                        //    ControlData.DataByte1,
+                        //    ControlData.SeparatorByte2,
+                        //    ControlData.DataByte2,
+                        //    ControlData.EndByte
+                        //}, 0, Constants.BytesNumber);
+                    
                 }
             });
          //   MakeConnection(pickedDevice);
@@ -98,7 +136,7 @@ namespace InteligentDimmerMobile.Activities
         public override void OnBackPressed()
         {
             base.OnBackPressed();
-            //     _socket.Close();
+            _socket.Close();
             Task.Delay(500);
         }
 
@@ -388,7 +426,14 @@ namespace InteligentDimmerMobile.Activities
               
                 _sliderSeekBar.Progress = _sliderValue;
                 PrepareDataService.PrepareData(0x01, (byte)_sliderValue, 0x00);
-                await SendData();
+                try
+                {
+                    await SendData();
+                }
+                catch (Java.Lang.Exception ex)
+                {
+                    
+                }
             }
         }
 
@@ -397,13 +442,44 @@ namespace InteligentDimmerMobile.Activities
             _wrapperLayout.ClearFocus();
             if (ValidateTimer())
             {
-                //var startTimeHour = int.Parse(_startTimeHoursEditText.Text);
-                //var startTimeMinute = int.Parse(_startTimeMinutesEditText.Text);
-                //var endTimeHour = int.Parse(_endTimeHoursEditText.Text);
-                //var endTimeinute = int.Parse(_endTimeMinutesEditText.Text);
-                //var brightness = int.Parse(_brightnessTimerEditText.Text);
-                //PrepareDataService.PrepareData();
-                //await SendData();
+                var startTimeHour = int.Parse(_startTimeHoursEditText.Text);
+                var startTimeMinute = int.Parse(_startTimeMinutesEditText.Text);
+                var endTimeHour = int.Parse(_endTimeHoursEditText.Text);
+                var endTimeinute = int.Parse(_endTimeMinutesEditText.Text);
+                var brightness = int.Parse(_brightnessTimerEditText.Text);
+
+                // ON
+                PrepareDataService.PrepareData(0x07, 0x00, 0x01); // mode, minute, value
+                await SendData();
+                PrepareDataService.PrepareData(0x07, 0x01, 0x00); // mode, hour,  value
+                await SendData();
+                PrepareDataService.PrepareData(0x07, 0x02, 0x00); // mode, day, value
+                await SendData();
+                PrepareDataService.PrepareData(0x07, 0x03, 0x00); // mode, weekday, value
+                await SendData();
+                PrepareDataService.PrepareData(0x07, 0x04, 0x00); 
+                await SendData();
+                PrepareDataService.PrepareData(0x07, 0x05, 0x01);
+                await SendData();
+
+                // OFF
+                PrepareDataService.PrepareData(0x08, 0x00, 0x02);
+                await SendData();
+                PrepareDataService.PrepareData(0x08, 0x01, 0x00);
+                await SendData();
+                PrepareDataService.PrepareData(0x08, 0x02, 0x00);
+                await SendData();
+                PrepareDataService.PrepareData(0x08, 0x03, 0x00);
+                await SendData();
+                PrepareDataService.PrepareData(0x08, 0x04, 0x00);
+                await SendData();
+                PrepareDataService.PrepareData(0x08, 0x05, 0x00);
+                await SendData();
+
+                // 
+                PrepareDataService.PrepareData(0x06, 0x01, 0x01);
+                await SendData();
+
                 Toast.MakeText(this, "Sent", ToastLength.Short).Show();
             }
             else

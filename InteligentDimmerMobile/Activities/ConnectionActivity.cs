@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Android.Bluetooth;
 using Android.Content.PM;
 using Android.Content.Res;
+using Android.Transitions;
 using Android.Views;
 using InteligentDimmerMobile.Adapters;
 using InteligentDimmerMobile.Configuration;
@@ -86,9 +87,9 @@ namespace InteligentDimmerMobile.Activities
             _busyIndicator.Visibility = ViewStates.Visible;
             _busyIndicatorLinearLayout.Visibility = ViewStates.Visible;
 
-            await Task.Run(async () =>
+            await Task.Run( () =>
             {
-                await Task.Delay(3000);
+                Task.Delay(3000);
             });
 
             if (_pickedDevice != null)
@@ -96,17 +97,17 @@ namespace InteligentDimmerMobile.Activities
                 try
                 {
 #if DEBUG
-                    HideLoadingIndicator();
-                    var controlActivity = new Intent(this, typeof(ControlActivity));
-                    controlActivity.PutExtra("DeviceName", _pickedDevice.Name);
-                    controlActivity.PutExtra("DeviceMac", _pickedDevice.Address);
-                    StartActivity(controlActivity);
+                    //HideLoadingIndicator();
+                    //var controlActivity = new Intent(this, typeof(ControlActivity));
+                    //controlActivity.PutExtra("DeviceName", _pickedDevice.Name);
+                    //controlActivity.PutExtra("DeviceMac", _pickedDevice.Address);
+                    //StartActivity(controlActivity);
 #endif
 
                     _socket =
-                        // _pickedDevice.CreateInsecureRfcommSocketToServiceRecord(
-                        //     UUID.FromString(Constants.BluetoothUUID));
-                        _pickedDevice.CreateRfcommSocketToServiceRecord(UUID.FromString(Constants.BluetoothUUID));
+                         _pickedDevice.CreateInsecureRfcommSocketToServiceRecord(
+                             UUID.FromString(Constants.BluetoothUUID));
+                    //_pickedDevice.CreateRfcommSocketToServiceRecord(UUID.FromString(Constants.BluetoothUUID));
                     //CreateRfcommSocketToServiceRecord(Java.Util.UUID.FromString("00001101-0000-1000-8000-00805f9b34fb"));
                 }
                 catch (Java.Lang.Exception e)
@@ -117,11 +118,11 @@ namespace InteligentDimmerMobile.Activities
                 }
                 try
                 {
-                    await _socket.ConnectAsync();
-                    //await Task.Run(async ()  =>
-                    //{
-                    //    await _socket.ConnectAsync();
-                    //});
+                    //await _socket.ConnectAsync();
+                    await Task.Run(async () =>
+                    {
+                        await _socket.ConnectAsync();
+                    });
                 }
                 catch (Java.Lang.Exception e)
                 {
@@ -156,8 +157,9 @@ namespace InteligentDimmerMobile.Activities
                 //   await _socket.InputStream.ReadAsync(response, 0, 1);
                 try
                 {
+                    await Task.Delay(2000);
                     _socket.Close();
-                    Thread.Sleep(1000);
+                    await Task.Delay(1000);
                 }
                 catch (Java.Lang.Exception e)
                 {
@@ -167,10 +169,10 @@ namespace InteligentDimmerMobile.Activities
                 }
 
                 #region release
-                //var controlActivity = new Intent(this, typeof(ControlActivity));
-                //controlActivity.PutExtra("DeviceName", _pickedDevice.Name);
-                //controlActivity.PutExtra("DeviceMac", _pickedDevice.Address);
-                //StartActivity(controlActivity);
+                var controlActivity = new Intent(this, typeof(ControlActivity));
+                controlActivity.PutExtra("DeviceName", _pickedDevice.Name);
+                controlActivity.PutExtra("DeviceMac", _pickedDevice.Address);
+                StartActivity(controlActivity);
                 #endregion
 
                 //// _socket.OutputStream.Close();
@@ -235,20 +237,22 @@ namespace InteligentDimmerMobile.Activities
             }
             var pairedDevices = _bluetoothAdapter.BondedDevices;
 
-            await Task.Run(() =>
-            {
-                _pickedDevice = _bluetoothAdapter.BondedDevices
-                                                .FirstOrDefault(x => x.Address == "20:16:09:06:39:89");
-            });
+            //await Task.Run(() =>
+            //{
+            //    _pickedDevice = _bluetoothAdapter.BondedDevices
+            //                                    .FirstOrDefault(x => x.Address == "20:16:09:06:39:89");
+            //});
 
-            if (_pickedDevice != null)
-            {
-                HideLoadingIndicator();
-                var controlActivity = new Intent(this, typeof(ControlActivity));
-                controlActivity.PutExtra("DeviceName", _pickedDevice.Name);
-                controlActivity.PutExtra("DeviceMac", _pickedDevice.Address);
-                StartActivity(controlActivity);
-            }
+            //if (_pickedDevice != null)
+            //{
+            //    HideLoadingIndicator();
+            //    var controlActivity = new Intent(this, typeof(ControlActivity));
+            //    var options = ActivityOptions.MakeSceneTransitionAnimation(this);
+
+            //    controlActivity.PutExtra("DeviceName", _pickedDevice.Name);
+            //    controlActivity.PutExtra("DeviceMac", _pickedDevice.Address);
+            //    StartActivity(controlActivity, options.ToBundle());
+            //}
 
             foreach (var pairedDevice in pairedDevices)
             {

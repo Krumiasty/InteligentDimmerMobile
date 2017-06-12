@@ -3,4 +3,5 @@
   <string name="ApplicationName">Dimmer</string>
   <string name="TurnOff">Turn Off</string>
   <string name="TurnOn">Turn On</string>
+  <string name="Connect">Connect</string>
 </resources>
