@@ -2359,8 +2359,32 @@ namespace InteligentDimmerMobile
 			// aapt resource value: 0x7f050021
 			public const int ApplicationName = 2131034145;
 			
+			// aapt resource value: 0x7f05002c
+			public const int Brightness = 2131034156;
+			
+			// aapt resource value: 0x7f05002a
+			public const int Colon = 2131034154;
+			
 			// aapt resource value: 0x7f050024
 			public const int Connect = 2131034148;
+			
+			// aapt resource value: 0x7f050026
+			public const int CurrentValue = 2131034150;
+			
+			// aapt resource value: 0x7f05002b
+			public const int EndTime = 2131034155;
+			
+			// aapt resource value: 0x7f050027
+			public const int Percent = 2131034151;
+			
+			// aapt resource value: 0x7f050025
+			public const int Scan = 2131034149;
+			
+			// aapt resource value: 0x7f050028
+			public const int SetBirghtnessTimer = 2131034152;
+			
+			// aapt resource value: 0x7f050029
+			public const int StartTime = 2131034153;
 			
 			// aapt resource value: 0x7f050022
 			public const int TurnOff = 2131034146;
@@ -2492,11 +2516,11 @@ namespace InteligentDimmerMobile
 			// aapt resource value: 0x7f0700a2
 			public const int Animation_AppCompat_DropDownUp = 2131165346;
 			
-			// aapt resource value: 0x7f070165
-			public const int AppBaseTheme = 2131165541;
-			
 			// aapt resource value: 0x7f070166
-			public const int AppTheme = 2131165542;
+			public const int AppBaseTheme = 2131165542;
+			
+			// aapt resource value: 0x7f070167
+			public const int AppTheme = 2131165543;
 			
 			// aapt resource value: 0x7f0700a3
 			public const int Base_AlertDialog_AppCompat = 2131165347;
@@ -2956,6 +2980,9 @@ namespace InteligentDimmerMobile
 			
 			// aapt resource value: 0x7f070164
 			public const int ConnectionHoloButtonStyle = 2131165540;
+			
+			// aapt resource value: 0x7f070165
+			public const int ConnectionTextViewStyle = 2131165541;
 			
 			// aapt resource value: 0x7f070162
 			public const int ConnectionUnderline = 2131165538;

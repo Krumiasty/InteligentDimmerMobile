@@ -135,6 +135,8 @@ namespace InteligentDimmerMobile.Activities
                 // PrepareData(0x00, 0x00);
                 //await _socket.OutputStream.WriteAsync()
                 PrepareDataService.PrepareData(0x01, 0x00, 0x00);
+                //SynchronizeTimeOnDevice();
+
                 try
                 {
                     await _socket.OutputStream.WriteAsync(new byte[]
@@ -231,28 +233,11 @@ namespace InteligentDimmerMobile.Activities
                 _wasBluetoothEnabled = false;
                 await Task.Run(async () =>
                 {
-                    _bluetoothAdapter.Enable();
+                    _bluetoothAdapter.Enable(); // put it before Task.Run
                     await Task.Delay(2000);
                 });
             }
             var pairedDevices = _bluetoothAdapter.BondedDevices;
-
-            //await Task.Run(() =>
-            //{
-            //    _pickedDevice = _bluetoothAdapter.BondedDevices
-            //                                    .FirstOrDefault(x => x.Address == "20:16:09:06:39:89");
-            //});
-
-            //if (_pickedDevice != null)
-            //{
-            //    HideLoadingIndicator();
-            //    var controlActivity = new Intent(this, typeof(ControlActivity));
-            //    var options = ActivityOptions.MakeSceneTransitionAnimation(this);
-
-            //    controlActivity.PutExtra("DeviceName", _pickedDevice.Name);
-            //    controlActivity.PutExtra("DeviceMac", _pickedDevice.Address);
-            //    StartActivity(controlActivity, options.ToBundle());
-            //}
 
             foreach (var pairedDevice in pairedDevices)
             {
