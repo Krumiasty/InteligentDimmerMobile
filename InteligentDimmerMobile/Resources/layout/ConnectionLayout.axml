@@ -24,7 +24,7 @@
             android:layout_width="120dp"
             android:layout_height="50dp"
             android:id="@+id/searchButton"
-            android:text="Scan"
+            android:text="@string/Scan"
             android:textSize="16dp"
             style="@style/ConnectionHoloButtonStyle"/>
         <LinearLayout

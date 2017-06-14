@@ -68,26 +68,18 @@
                 android:gravity="center"
                 android:textAlignment="center">
                 <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:textSize="20dp"
-                    android:text="Turn Off"
+                    android:text="@string/TurnOff"
                     android:id="@+id/offTextView"
-                    android:fontFamily="sans-serif-condensed"
-                    android:gravity="center" />
+                    style="@style/ConnectionTextViewStyle"/>
                 <Switch
                     android:layout_width="100dp"
                     android:layout_height="50dp"
                     android:id="@+id/onOffSwitch"
                     android:gravity="center" />
                 <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:textSize="20dp"
                     android:text="@string/TurnOn"
-                    android:fontFamily="sans-serif-condensed"
                     android:id="@+id/onTextView"
-                    android:gravity="center" />
+                    style="@style/ConnectionTextViewStyle"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -137,12 +129,9 @@
                 android:paddingBottom="30dp">
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="Current Value:"
-                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/CurrentValue"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textSize="20dp" />
+                    style="@style/ConnectionTextViewStyle"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -160,12 +149,9 @@
                 </LinearLayout>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="%"
+                    android:text="@string/Percent"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textSize="20dp"
-                    android:fontFamily="sans-serif-condensed" />
+                    style="@style/ConnectionTextViewStyle"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -193,11 +179,10 @@
                 <TextView
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="Set Brightness Timer"
-                  android:fontFamily="sans-serif-medium"
-                  android:gravity="center"
+                  android:text="@string/SetBirghtnessTimer"
                   android:layout_gravity="center"
-                  android:textSize="24dp" />
+                  android:textSize="24dp"
+                  style="@style/ConnectionTextViewStyle"/>
               </LinearLayout>
               
                 <LinearLayout
@@ -210,11 +195,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:layout_gravity="center"
                         android:textSize="22dp"
-                        android:text="Start time:"
-                        android:fontFamily="sans-serif-condensed" />
+                        android:text="@string/StartTime"
+                        style="@style/ConnectionTextViewStyle"/>
                 </LinearLayout>
                 <LinearLayout
                     android:orientation="horizontal"
@@ -235,10 +219,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:layout_gravity="center"
-                        android:textSize="20dp"
-                        android:text=":" />
+                        android:text="@string/Colon"
+                        style="@style/ConnectionTextViewStyle"/>
                     <EditText
                         android:inputType="time"
                         android:layout_width="75dp"
@@ -259,12 +242,10 @@
                 <TextView
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:gravity="center"
                   android:layout_gravity="center"
-                  android:textSize="20dp"
-                  android:text="End time:"
-                  android:fontFamily="sans-serif-condensed"
-                  android:paddingTop="10dp" />
+                  android:text="@string/EndTime"
+                  android:paddingTop="10dp" 
+                  style="@style/ConnectionTextViewStyle"/>
               </LinearLayout>
                 <LinearLayout
                     android:orientation="horizontal"
@@ -285,10 +266,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:layout_gravity="center"
-                        android:textSize="20dp"
-                        android:text=":" />
+                        android:text="@string/Colon" 
+                        style="@style/ConnectionTextViewStyle"
+                        />
                     <EditText
                         android:inputType="time"
                         android:layout_width="75dp"
@@ -309,12 +290,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_gravity="center"
-                    android:textSize="20dp"
-                    android:text="Brightness:"
-                    android:fontFamily="sans-serif-condensed"
-                    android:paddingTop="10dp" />
+                    android:text="@string/Brightness"
+                    android:paddingTop="10dp" 
+                    style="@style/ConnectionTextViewStyle"/>
               </LinearLayout>
                 <LinearLayout
                     android:orientation="horizontal"
@@ -334,11 +313,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
                         android:layout_gravity="center"
-                        android:textSize="20dp"
-                        android:fontFamily="sans-serif-condensed"
-                        android:text="%" />
+                        android:text="@string/Percent"
+                        style="@style/ConnectionTextViewStyle"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_height="wrap_content"

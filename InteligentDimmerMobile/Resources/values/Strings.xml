@@ -4,4 +4,12 @@
   <string name="TurnOff">Turn Off</string>
   <string name="TurnOn">Turn On</string>
   <string name="Connect">Connect</string>
+  <string name="Scan">Scan</string>
+  <string name="CurrentValue">Current Value:</string>
+  <string name="Percent">%</string>
+  <string name="SetBirghtnessTimer">Set Brightness Timer</string>
+  <string name="StartTime">Start time:</string>
+  <string name="Colon">:</string>
+  <string name="EndTime">End time:</string>
+  <string name="Brightness">Brightness:</string>
 </resources>
