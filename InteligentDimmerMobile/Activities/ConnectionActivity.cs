@@ -89,7 +89,7 @@ namespace InteligentDimmerMobile.Activities
 
             await Task.Run( () =>
             {
-                Task.Delay(3000);
+                Task.Delay(2000);
             });
 
             if (_pickedDevice != null)
@@ -104,11 +104,8 @@ namespace InteligentDimmerMobile.Activities
                     //StartActivity(controlActivity);
 #endif
 
-                    _socket =
-                         _pickedDevice.CreateInsecureRfcommSocketToServiceRecord(
+                    _socket = _pickedDevice.CreateInsecureRfcommSocketToServiceRecord(
                              UUID.FromString(Constants.BluetoothUUID));
-                    //_pickedDevice.CreateRfcommSocketToServiceRecord(UUID.FromString(Constants.BluetoothUUID));
-                    //CreateRfcommSocketToServiceRecord(Java.Util.UUID.FromString("00001101-0000-1000-8000-00805f9b34fb"));
                 }
                 catch (Java.Lang.Exception e)
                 {
@@ -130,33 +127,99 @@ namespace InteligentDimmerMobile.Activities
                     HideLoadingIndicator();
                     return;
                 }
-                // Write data to the device
-                // SendData();
-                // PrepareData(0x00, 0x00);
-                //await _socket.OutputStream.WriteAsync()
-                PrepareDataService.PrepareData(0x01, 0x00, 0x00);
-                //SynchronizeTimeOnDevice();
-
+         
                 try
                 {
-                    await _socket.OutputStream.WriteAsync(new byte[]
+                    //SynchronizeTimeOnDevice();
+                    var currentTime = DateTime.Now;
+
+                    PrepareDataService.PrepareData(
+                                        (byte)Command.SetStructureTime, 
+                                        (byte)DataForSetTimeStructure.Minutes,
+                                        (byte)currentTime.Minute);
+
+                    await SendDataService.SendData(_socket);
+
+                    PrepareDataService.PrepareData(
+                                        (byte)Command.SetStructureTime,
+                                        (byte)DataForSetTimeStructure.Hours,
+                                        (byte)currentTime.Hour);
+
+                    await SendDataService.SendData(_socket);
+
+                    PrepareDataService.PrepareData(
+                                        (byte)Command.SetStructureTime,
+                                        (byte)DataForSetTimeStructure.Days,
+                                        (byte)currentTime.Day);
+
+                    await SendDataService.SendData(_socket);
+
+                    PrepareDataService.PrepareData(
+                                        (byte)Command.SetStructureTime,
+                                        (byte)DataForSetTimeStructure.Weekdays,
+                                        (byte)currentTime.DayOfWeek);
+
+                    await SendDataService.SendData(_socket);
+
+                    PrepareDataService.PrepareData(
+                                        (byte)Command.SetStructureTime,
+                                        (byte)DataForSetTimeStructure.Months,
+                                        (byte)currentTime.Month);
+
+                    await SendDataService.SendData(_socket);
+
+                    PrepareDataService.PrepareData(
+                                        (byte)Command.SetStructureTime,
+                                        (byte)DataForSetTimeStructure.Years,
+                                        (byte)(currentTime.Year % 2000));
+
+                    await SendDataService.SendData(_socket);
+
+                    PrepareDataService.PrepareData(
+                                        (byte)Command.WriteStructureToDevice,
+                                        0x00,
+                                        0x00);
+
+                    await SendDataService.SendData(_socket);
+
+                    byte[] response = new byte[7];
+                    try
                     {
-                        ControlData.StartByte,
-                        ControlData.CommandByte,
-                        ControlData.SeparatorByte1,
-                        ControlData.DataByte1,
-                        ControlData.SeparatorByte2,
-                        ControlData.DataByte2,
-                        ControlData.EndByte
-                    }, 0, Constants.BytesNumber);
+                       // await _socket.InputStream.ReadAsync(response, 0, 7);
+                    }
+                    catch (Java.Lang.Exception e)
+                    {
+                        HideLoadingIndicator();
+                        return;
+                    }
+                   
+                    //if (response[1] != 0xC0)
+                    //{
+                    //    Toast.MakeText(this, "Error synchronization date with device\nPlease try again", 
+                    //        ToastLength.Short).Show();
+                    //    HideLoadingIndicator();
+                    //    return;
+                    //}
+
+                    #region explicit_write
+                    //await _socket.OutputStream.WriteAsync(new byte[]
+                    //{
+                    //    ControlData.StartByte,
+                    //    ControlData.CommandByte,
+                    //    ControlData.SeparatorByte1,
+                    //    ControlData.DataByte1,
+                    //    ControlData.SeparatorByte2,
+                    //    ControlData.DataByte2,
+                    //    ControlData.EndByte
+                    //}, 0, Constants.BytesNumber);
+#endregion
+
                 }
                 catch (Java.Lang.Exception e)
                 {
                     HideLoadingIndicator();
                 }
 
-                //   byte[] response = new[] { (byte)0 };
-                //   await _socket.InputStream.ReadAsync(response, 0, 1);
                 try
                 {
                     await Task.Delay(2000);
@@ -177,17 +240,6 @@ namespace InteligentDimmerMobile.Activities
                 StartActivity(controlActivity);
                 #endregion
 
-                //// _socket.OutputStream.Close();
-
-                //    byte[] response = new []{ (byte)0 };
-                //    if (response[0] == (byte)0)
-                //    {
-                //_socket.InputStream.Close();
-                //var controlActivity = new Intent(this, typeof(ControlActivity));
-                //controlActivity.PutExtra("DeviceName", _pickedDevice.Name);
-                //controlActivity.PutExtra("DeviceMac", _pickedDevice.Address);
-                //StartActivity(controlActivity);
-                //    }
             }
             HideLoadingIndicator();
         }
@@ -197,21 +249,6 @@ namespace InteligentDimmerMobile.Activities
             _busyIndicator.Visibility = ViewStates.Gone;
             _busyIndicatorLinearLayout.Visibility = ViewStates.Gone;
             _connectButton.Clickable = true;
-        }
-
-        private void SendData()
-        {
-        //        Response = null;
-            _socket.OutputStream.Write(new byte[]
-             {
-                    ControlData.StartByte,
-                    ControlData.CommandByte,
-                    ControlData.SeparatorByte1,
-                    ControlData.DataByte1,
-                    ControlData.SeparatorByte2,
-                    ControlData.DataByte2,
-                    ControlData.EndByte
-             }, 0, 7);
         }
 
         private async Task FirstScan()

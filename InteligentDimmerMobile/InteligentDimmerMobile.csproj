@@ -96,11 +96,15 @@
     <Compile Include="Configuration\Constants.cs" />
     <Compile Include="Activities\ControlActivity.cs" />
     <Compile Include="Activities\ConnectionActivity.cs" />
+    <Compile Include="Model\Command.cs" />
     <Compile Include="Model\ControlData.cs" />
+    <Compile Include="Model\DataForSetTimeStructure.cs" />
+    <Compile Include="Model\DataForTimeStampStructure.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PrepareDataService.cs" />
     <Compile Include="Activities\SplashScreen.cs" />
+    <Compile Include="Services\SendDataService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
