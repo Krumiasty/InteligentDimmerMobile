@@ -10,7 +10,7 @@
     android:padding="20dp"
     android:background="@color/white">
   <TextView
-    android:text="Connecting to the Device"
+    android:text="Scanning for Devices"
     android:textAppearance="?android:attr/textAppearanceLarge"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
