@@ -4,18 +4,14 @@ using Android.OS;
 using System;
 using Android.Content;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Android.Bluetooth;
 using Android.Content.PM;
-using Android.Content.Res;
-using Android.Transitions;
 using Android.Views;
 using InteligentDimmerMobile.Adapters;
 using InteligentDimmerMobile.Configuration;
 using InteligentDimmerMobile.Model;
 using InteligentDimmerMobile.Services;
-using Java.Lang;
 using Java.Util;
 
 namespace InteligentDimmerMobile.Activities
@@ -45,15 +41,6 @@ namespace InteligentDimmerMobile.Activities
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.ConnectionLayout);
             SetupBindings();
-
-            #region testing
-            //var controlActivity = new Intent(this, typeof(ControlActivity));
-            //controlActivity.PutExtra("DeviceName", "Test");
-            ////  controlActivity.PutExtra("DeviceName", _pickedDevice.Name);
-            ////  controlActivity.PutExtra("DeviceMac", _pickedDevice.Address);
-            //StartActivity(controlActivity);
-            #endregion
-
         }
 
         protected override void OnStart()
@@ -89,21 +76,13 @@ namespace InteligentDimmerMobile.Activities
 
             await Task.Run( () =>
             {
-                Task.Delay(2000);
+                Task.Delay(1000);
             });
 
             if (_pickedDevice != null)
             {
                 try
                 {
-#if DEBUG
-                    //HideLoadingIndicator();
-                    //var controlActivity = new Intent(this, typeof(ControlActivity));
-                    //controlActivity.PutExtra("DeviceName", _pickedDevice.Name);
-                    //controlActivity.PutExtra("DeviceMac", _pickedDevice.Address);
-                    //StartActivity(controlActivity);
-#endif
-
                     _socket = _pickedDevice.CreateInsecureRfcommSocketToServiceRecord(
                              UUID.FromString(Constants.BluetoothUUID));
                 }
@@ -115,11 +94,11 @@ namespace InteligentDimmerMobile.Activities
                 }
                 try
                 {
-                    //await _socket.ConnectAsync();
-                    await Task.Run(async () =>
-                    {
-                        await _socket.ConnectAsync();
-                    });
+                    await _socket.ConnectAsync();
+                    //await Task.Run(async () =>
+                    //{
+                    //    await _socket.ConnectAsync();
+                    //});
                 }
                 catch (Java.Lang.Exception e)
                 {
@@ -182,38 +161,6 @@ namespace InteligentDimmerMobile.Activities
 
                     await SendDataService.SendData(_socket);
 
-                    byte[] response = new byte[7];
-                    try
-                    {
-                       // await _socket.InputStream.ReadAsync(response, 0, 7);
-                    }
-                    catch (Java.Lang.Exception e)
-                    {
-                        HideLoadingIndicator();
-                        return;
-                    }
-                   
-                    //if (response[1] != 0xC0)
-                    //{
-                    //    Toast.MakeText(this, "Error synchronization date with device\nPlease try again", 
-                    //        ToastLength.Short).Show();
-                    //    HideLoadingIndicator();
-                    //    return;
-                    //}
-
-                    #region explicit_write
-                    //await _socket.OutputStream.WriteAsync(new byte[]
-                    //{
-                    //    ControlData.StartByte,
-                    //    ControlData.CommandByte,
-                    //    ControlData.SeparatorByte1,
-                    //    ControlData.DataByte1,
-                    //    ControlData.SeparatorByte2,
-                    //    ControlData.DataByte2,
-                    //    ControlData.EndByte
-                    //}, 0, Constants.BytesNumber);
-#endregion
-
                 }
                 catch (Java.Lang.Exception e)
                 {
@@ -222,7 +169,7 @@ namespace InteligentDimmerMobile.Activities
 
                 try
                 {
-                    await Task.Delay(2000);
+                    await Task.Delay(1000);
                     _socket.Close();
                     await Task.Delay(1000);
                 }
@@ -270,7 +217,7 @@ namespace InteligentDimmerMobile.Activities
                 _wasBluetoothEnabled = false;
                 await Task.Run(async () =>
                 {
-                    _bluetoothAdapter.Enable(); // put it before Task.Run
+                    _bluetoothAdapter.Enable();
                     await Task.Delay(2000);
                 });
             }
